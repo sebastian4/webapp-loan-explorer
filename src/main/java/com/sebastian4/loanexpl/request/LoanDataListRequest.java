@@ -11,7 +11,10 @@ import com.sebastian4.loanexpl.model.loanrepr.LoanRepresentation;
 import com.sebastian4.loanexpl.model.loanrepr.LocalPayment;
 import com.sebastian4.loanexpl.model.loansnew.Loan;
 import com.sebastian4.loanexpl.model.loansnew.LoansNewest;
+
+import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +47,8 @@ public class LoanDataListRequest {
         
         loanDataList.setSize(loansNewest.getPaging().getPageSize());
         
+        List<LoanData> loanDatas = new ArrayList<LoanData>();
+        
         List<Loan> loans = loansNewest.getLoans();
         
         for (Loan loan : loans) {
@@ -68,8 +73,12 @@ public class LoanDataListRequest {
 //            }
 
             logger.debug("id="+loanData.getId()+", payments="+loanData.getPaidAmount());
+            
+            loanDatas.add(loanData);
 
         }
+        
+        loanDataList.setLoanDataList(loanDatas);
         
         logger.debug(loanDataList.toString());
         
