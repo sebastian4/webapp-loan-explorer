@@ -125,7 +125,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>loan-explorer</finalName>
+		<finalName>webapp-loan-explorer</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>

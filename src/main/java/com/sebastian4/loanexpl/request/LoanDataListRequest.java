@@ -71,8 +71,6 @@ public class LoanDataListRequest {
 
         }
         
-        
-        
         logger.debug(loanDataList.toString());
         
         logger.debug("End getLoanDataList");

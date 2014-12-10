@@ -9,6 +9,7 @@ import com.sebastian4.loanexpl.model.loanconvert.LoanDataList;
 import com.sebastian4.loanexpl.request.LoanDataListRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author sebastianmac
  */
+@Controller
 public class LoanDataListController {
     
     private static final Logger logger = LoggerFactory.getLogger(LoanDataListController.class);
@@ -30,6 +32,14 @@ public class LoanDataListController {
             LoanDataList loanDataList = httpRequest.getLoanDataList(size);
             logger.debug("HTTP GET Response - End getLoanDataList");
             return loanDataList;
+    }
+    
+    @RequestMapping(value = "/version", method = RequestMethod.GET)
+    public @ResponseBody String getVersion() {
+            logger.debug("HTTP GET Request - Start getVersion");
+            String version = "v.1.1";
+            logger.debug("HTTP GET Response - End getVersion");
+            return version;
     }
     
 }
