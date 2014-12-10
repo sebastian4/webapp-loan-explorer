@@ -5,7 +5,10 @@
  */
 package com.sebastian4.loanexpl.request;
 
+import com.sebastian4.loanexpl.model.loanconvert.LoanData;
 import com.sebastian4.loanexpl.model.loanconvert.LoanDataList;
+import com.sebastian4.loanexpl.model.loanrepr.LoanRepresentation;
+import com.sebastian4.loanexpl.model.loanrepr.LocalPayment;
 import com.sebastian4.loanexpl.model.loansnew.Loan;
 import com.sebastian4.loanexpl.model.loansnew.LoansNewest;
 import java.util.List;
@@ -44,10 +47,28 @@ public class LoanDataListRequest {
         List<Loan> loans = loansNewest.getLoans();
         
         for (Loan loan : loans) {
-            logger.debug(loan.getName());
             
+            LoanData loanData = new LoanData();
             
+            loanData.setName(loan.getName());
+            loanData.setId(loan.getId());
+            loanData.setSector(loan.getSector());
+            loanData.setCountry(loan.getLocation().getCountry());
+            loanData.setLoanAmount(loan.getLoanAmount().doubleValue());
+
+            LoanRepresentation loanRepresentation = loanRepresentationRequest.getLoanRepresentation(loanData.getId());
+
+            List<LocalPayment> payments = loanRepresentation.getLoans().get(0).getTerms().getLocalPayments();
+            loanData.setPayments(payments);
             
+            loanData.setPaidAmount(loanRepresentation.getLoans().get(0).getTerms().getDisbursalAmount().doubleValue());
+
+//            for (LocalPayment payment : payments) {
+//                paidAmount+=payment.getAmount();
+//            }
+
+            logger.debug("id="+loanData.getId()+", payments="+loanData.getPaidAmount());
+
         }
         
         
