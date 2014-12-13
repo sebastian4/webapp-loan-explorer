@@ -27,7 +27,7 @@ public class LoansNewestRequestTest {
 
     @Test
     public void testGetLoansNewest() {
-            LoansNewest loansNewest = httpRequest.getLoansNewest(5);
+            LoansNewest loansNewest = httpRequest.getLoansNewest(5,2);
             assertEquals("must be the same size",5,loansNewest.getPaging().getPageSize().intValue());
     }
     

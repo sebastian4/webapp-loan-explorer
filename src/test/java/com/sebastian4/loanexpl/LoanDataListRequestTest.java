@@ -26,8 +26,8 @@ public class LoanDataListRequestTest {
 
     @Test
     public void testGetLoanDataList() {
-            LoanDataList loanDataList = request.getLoanDataList(6);
-            assertEquals("must be the same size",6,loanDataList.getSize().intValue());
+            LoanDataList loanDataList = request.getLoanDataList(8,2);
+            assertEquals("must be the same size",8,loanDataList.getSize().intValue());
     }
     
 }

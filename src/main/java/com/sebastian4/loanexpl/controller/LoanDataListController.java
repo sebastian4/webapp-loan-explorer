@@ -26,18 +26,18 @@ public class LoanDataListController {
     
     private LoanDataListRequest httpRequest = new LoanDataListRequest("http://api.kivaws.org/v1/loans/newest.json","http://api.kivaws.org/v1/loans");
 	
-    @RequestMapping(value = "/{size}", method = RequestMethod.GET)
-    public @ResponseBody LoanDataList getLoanDataList(@PathVariable("size") Integer size) {
-            logger.debug("HTTP GET Request - Start getLoanDataList");
-            LoanDataList loanDataList = httpRequest.getLoanDataList(size);
-            logger.debug("HTTP GET Response - End getLoanDataList");
+    @RequestMapping(value = "/{size}/{page}", method = RequestMethod.GET)
+    public @ResponseBody LoanDataList getLoanDataList(@PathVariable("size") Integer size, @PathVariable("page") Integer page) {
+            logger.debug("HTTP GET Request - Start getLoanDataList: "+size+", "+page);
+            LoanDataList loanDataList = httpRequest.getLoanDataList(size,page);
+            logger.debug("HTTP GET Response - End getLoanDataList: "+size+", "+page);
             return loanDataList;
     }
     
     @RequestMapping(value = "/version", method = RequestMethod.GET)
     public @ResponseBody String getVersion() {
             logger.debug("HTTP GET Request - Start getVersion");
-            String version = "v.1.1";
+            String version = "v.0.1";
             logger.debug("HTTP GET Response - End getVersion");
             return version;
     }

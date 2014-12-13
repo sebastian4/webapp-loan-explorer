@@ -9,6 +9,7 @@ import com.sebastian4.loanexpl.model.loanconvert.LoanData;
 import com.sebastian4.loanexpl.model.loanconvert.LoanDataList;
 import com.sebastian4.loanexpl.model.loanrepr.LoanRepresentation;
 import com.sebastian4.loanexpl.model.loanrepr.LocalPayment;
+import com.sebastian4.loanexpl.model.loanrepr.ScheduledPayment;
 import com.sebastian4.loanexpl.model.loansnew.Loan;
 import com.sebastian4.loanexpl.model.loansnew.LoansNewest;
 
@@ -26,24 +27,24 @@ public class LoanDataListRequest {
     
     private static final Logger logger = LoggerFactory.getLogger(LoanDataListRequest.class);
     
-    private static LoansNewestRequest loansNewestRequest = null;
-    private static LoanRepresentationRequest loanRepresentationRequest = null;
+    private LoansNewestRequest loansNewestRequest = null;
+    private LoanRepresentationRequest loanRepresentationRequest = null;
 
     public LoanDataListRequest(String newestListUrl, String individualLoanUrl) {
         this.loansNewestRequest = new LoansNewestRequest(newestListUrl);
         this.loanRepresentationRequest = new LoanRepresentationRequest(individualLoanUrl);
     }
     
-    public LoanDataList getLoanDataList(int size) {
-        logger.debug("Start getLoanDataList");
+    public LoanDataList getLoanDataList(int size, int page) {
+        logger.debug("Start getLoanDataList: "+size+", "+page);
         
         LoanDataList loanDataList = new LoanDataList();
         
-        logger.debug("request info");
+        //logger.debug("request info");
         
-        LoansNewest loansNewest = loansNewestRequest.getLoansNewest(size);
+        LoansNewest loansNewest = loansNewestRequest.getLoansNewest(size,page);
         
-        logger.debug("got info");
+        //logger.debug("got info");
         
         loanDataList.setSize(loansNewest.getPaging().getPageSize());
         
@@ -59,20 +60,35 @@ public class LoanDataListRequest {
             loanData.setId(loan.getId());
             loanData.setSector(loan.getSector());
             loanData.setCountry(loan.getLocation().getCountry());
-            loanData.setLoanAmount(loan.getLoanAmount().doubleValue());
 
             LoanRepresentation loanRepresentation = loanRepresentationRequest.getLoanRepresentation(loanData.getId());
 
-            List<LocalPayment> payments = loanRepresentation.getLoans().get(0).getTerms().getLocalPayments();
-            loanData.setPayments(payments);
-            
-            loanData.setPaidAmount(loanRepresentation.getLoans().get(0).getTerms().getDisbursalAmount().doubleValue());
+            if (loanRepresentation.getLoans().size() > 0) {
+            	
+            	List<LocalPayment> payments = loanRepresentation.getLoans().get(0).getTerms().getLocalPayments();
+                loanData.setPayments(payments);
 
-//            for (LocalPayment payment : payments) {
-//                paidAmount+=payment.getAmount();
-//            }
+                List<ScheduledPayment> scheduledPayments = loanRepresentation.getLoans().get(0).getTerms().getScheduledPayments();
+                
+                double paidAmount = 0.0;
 
-            logger.debug("id="+loanData.getId()+", payments="+loanData.getPaidAmount());
+                for (LocalPayment payment : payments) {
+                    paidAmount+=payment.getAmount();
+                }
+                
+                double loanAmount = paidAmount;
+                
+                for (ScheduledPayment scheduledPayment : scheduledPayments) {
+                	loanAmount+=scheduledPayment.getAmount();
+                }
+                
+                loanData.setPaidAmount(paidAmount);
+                
+                loanData.setLoanAmount(loanAmount);
+
+            }
+
+            logger.debug("id="+loanData.getId()+", paidAmount="+loanData.getPaidAmount()+", loanAmount="+loanData.getLoanAmount());
             
             loanDatas.add(loanData);
 
@@ -82,7 +98,7 @@ public class LoanDataListRequest {
         
         logger.debug(loanDataList.toString());
         
-        logger.debug("End getLoanDataList");
+        logger.debug("End getLoanDataList: "+size+", "+page);
 
         return loanDataList;
     }

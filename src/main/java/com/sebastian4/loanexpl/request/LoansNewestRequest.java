@@ -35,13 +35,13 @@ public class LoansNewestRequest {
 	mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
     
-    public LoansNewest getLoansNewest(int size) {
+    public LoansNewest getLoansNewest(int size, int page) {
 		logger.debug("Start getLoansNewest");
 		
 		LoansNewest loansNewest = null;
 		
 		try {
-			url = new URL(baseUrl+"?per_page="+size);
+			url = new URL(baseUrl+"?per_page="+size+"&page="+page);
 			URLConnection connection = url.openConnection(); 
 			loansNewest = mapper.readValue(connection.getInputStream(), LoansNewest.class);
 			logger.debug(loansNewest.toString());
