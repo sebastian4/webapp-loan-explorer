@@ -28,6 +28,8 @@ angular.module('myApp.view1', ['ngRoute'])
 				$http.get('rest/10/2')
 				.success($scope.httpSuccess),
 				$http.get('rest/10/3')
+				.success($scope.httpSuccess),
+				$http.get('rest/10/4')
 				.success($scope.httpSuccess)
 			])
 			.then($scope.recordLoans)
