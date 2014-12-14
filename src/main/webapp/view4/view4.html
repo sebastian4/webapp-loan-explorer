@@ -1,0 +1,16 @@
+<div ng-controller="View4Ctrl" ng-init="init()" class="loan-container">
+
+	<h3>View 4: Timeline</h3>
+
+	<div id="loan-list">
+	    <select ng-model="currentLoan" ng-change="updateLoan()" ng-options="loan.name for loan in loans">
+	      <option value="">-- choose loan --</option>
+	    </select>
+	</div>
+
+	<br/>
+	<div id="mytimeline"></div>
+
+	<h4>payments : {{paymentsSize()}}</h4>
+
+</div>

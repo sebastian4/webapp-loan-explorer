@@ -1,0 +1,41 @@
+<div ng-controller="View1Ctrl" ng-init="init()" class="loan-container">
+
+	<h3>View 1: table of all loans</h3>
+
+	<div id="load-wheel">
+		<img src="http://jimpunk.net/Loading/wp-content/uploads/loading1.gif"/>
+	</div>
+
+	<div id="loan-list">
+
+		<table class="gridtable">
+
+		  <thead>
+			  <tr>
+			    <th>Id</th>
+			    <th>Name</th> 
+			    <th>Paid Amount</th>
+			    <th>Loan Amount</th>
+			    <th>Country</th>
+			    <th>Sector</th>
+			  </tr>
+		  </thead>
+
+		  <tbody>
+			  <tr ng-repeat="loan in loans">
+			    <td>{{loan.id}}</td>
+			    <td>{{loan.name}}</td> 
+			    <td>{{loan.paidAmount | currency}}</td>
+			    <td>{{loan.loanAmount | currency}} </td>
+			    <td>{{loan.country}}</td> 
+			    <td>{{loan.sector}}</td>
+			  </tr>
+		  <tbody>
+
+		</table>
+
+	</div>
+
+	<h4>quantity : {{loansSize()}}</h4>
+
+</div>
